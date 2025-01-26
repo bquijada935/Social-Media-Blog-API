@@ -16,7 +16,7 @@ public class AccountService {
     /**
      * No-args constructor for a accountService instantiates a plain accountDAO.
      */
-    public AccountService(){
+    public AccountService() {
         accountDAO = new AccountDAO();
     }
 
@@ -24,7 +24,7 @@ public class AccountService {
      * Constructor for a accountService when a accountDAO is provided.
      * @param accountDAO
      */
-    public AccountService(AccountDAO accountDAO){
+    public AccountService(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
 
@@ -39,7 +39,7 @@ public class AccountService {
      * @return the newly added account if the add operation was successful, including the account_id. We do this to
      *         inform our provide the front-end client with information about the added Account.
      */
-    public Account addUser(Account account){
+    public Account addUser(Account account) {
         if (account.getUsername().strip().length() == 0) {
             return null;
         } else if (account.getPassword().length() < 4) {
@@ -55,7 +55,7 @@ public class AccountService {
      * @param account an object representing a new Account.
      * @return the account information if the login credentials were valid.
      */
-    public Account loginAccount(Account account){
+    public Account loginAccount(Account account) {
         return accountDAO.checkLogin(account);
     }
 

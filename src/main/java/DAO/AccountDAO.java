@@ -23,7 +23,7 @@ public class AccountDAO {
      * @param account an object modelling a Account. The account object does not contain an account ID.
      * @return successfully registered accounts or null.
      */
-    public Account registerUser(Account account){
+    public Account registerUser(Account account) {
 
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -33,7 +33,7 @@ public class AccountDAO {
             preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
-            if(pkeyResultSet.next()) {
+            if (pkeyResultSet.next()) {
                 int generated_account_id = (int) pkeyResultSet.getLong(1);
                 return new Account(generated_account_id, account.getUsername(), account.getPassword());
             }
@@ -50,7 +50,7 @@ public class AccountDAO {
      * @param account an object modelling a Account. The account object does not contain an account ID.
      * @return account information if login credentials match.
      */
-    public Account checkLogin(Account account){
+    public Account checkLogin(Account account) {
 
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -59,7 +59,7 @@ public class AccountDAO {
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
+            if (rs.next()) {
                 Account accountInformation = new Account(rs.getInt("account_id"), 
                 rs.getString("username"),
                 rs.getString("password"));
