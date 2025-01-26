@@ -66,7 +66,7 @@ public class MessageDAO {
                         rs.getLong("time_posted_epoch"));
                 allMessages.add(message);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return allMessages;
@@ -92,7 +92,7 @@ public class MessageDAO {
                         rs.getLong("time_posted_epoch"));
                 return message;
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -110,7 +110,7 @@ public class MessageDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, messageId);
             preparedStatement.executeUpdate();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -124,16 +124,41 @@ public class MessageDAO {
     public void updateMessage(Message message, int messageId) {
         Connection connection = ConnectionUtil.getConnection();
         try {
-            String sql = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?";
+            String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, message.getPosted_by());
-            preparedStatement.setString(2, message.getMessage_text());
-            preparedStatement.setLong(3, message.getTime_posted_epoch());
-            preparedStatement.setInt(4, messageId);
+            preparedStatement.setString(1, message.getMessage_text());
+            preparedStatement.setInt(2, messageId);
             preparedStatement.executeUpdate();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Gets all of the messages posted by a user.
+     * 
+     * @param accountId the account id.
+     * @return all messages posted from a particular user.
+     */
+    public List<Message> getUserMessages(int accountId) {
+        Connection connection = ConnectionUtil.getConnection();
+        List<Message> userMessages = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM message WHERE posted_by = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accountId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Message message = new Message(rs.getInt("message_id"),
+                        rs.getInt("posted_by"),
+                        rs.getString("message_text"),
+                        rs.getLong("time_posted_epoch"));
+                userMessages.add(message);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return userMessages;
     }
 
 }

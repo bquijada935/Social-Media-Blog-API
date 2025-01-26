@@ -65,7 +65,7 @@ public class AccountDAO {
                 rs.getString("password"));
                 return accountInformation;
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;

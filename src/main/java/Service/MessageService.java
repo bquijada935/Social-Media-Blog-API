@@ -102,5 +102,15 @@ public class MessageService {
             return messageDAO.getMessageById(message_id);
         }
     }
+
+    /**
+     * Retrieves all messages of a given user.
+     * 
+     * @param account_id the account id.
+     * @return all user messages.
+     */
+    public List<Message> retrieveUserMessages(int account_id) {
+        return messageDAO.getUserMessages(account_id);
+    }
     
 }
